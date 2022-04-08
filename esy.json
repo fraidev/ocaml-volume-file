@@ -1,0 +1,32 @@
+{
+    "name": "hello",
+    "esy": {
+        "build": "dune build -p #{self.name}",
+        "release": {
+            "bin": [
+                "hello"
+            ]
+        },
+        "buildEnv": {
+            "PATH": "%{localStore}%/../bin:$PATH"
+        }
+    },
+    "license": "MIT",
+    "scripts": {
+        "start": "esy x hello.exe",
+        "watch": "esy b dune build --watch",
+        "build": "dune build -p hello",
+        "test": "dune exec -p hello -- ./test.sh",
+        "format": "dune build @fmt --auto-promote",
+        "build_static": "dune build --profile=static --release"
+    },
+    "dependencies": {
+        "ocaml": "4.12.x",
+        "@opam/dune": "*",
+        "@opam/core": "*"
+    },
+    "devDependencies": {
+        "@opam/ocaml-lsp-server": "*",
+        "@opam/ocamlformat": "*"
+    }
+}
