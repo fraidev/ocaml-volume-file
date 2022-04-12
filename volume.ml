@@ -73,30 +73,26 @@ let write_string ?(pos = 0) ?len descr buf =
   inner pos len
 
 let save file_name =
+  print_string file_name;
   let open Lwt_result_syntax in
   let file = file_name in
   let*! v =
     with_atomic_open_out file (fun chan ->
         let content = "json" in
         write_string chan content) in
-  let _ =
-    match v with
-    | Ok _ -> print_endline "Works Ok"
-    | Error err ->
-      Format.printf "%s\n" "======Error=====";
-      Format.printf "Arg: %s\n" err.caller;
-      Format.printf "unix_code: %s\n" (Unix.error_message err.unix_code);
-      Format.printf "Caller: %s\n" err.caller in
-  return file
+  match v with
+  | Ok _ -> return file
+  | Error err -> fail err
 
 let () =
   let arg = Sys.argv.(1) in
   match Lwt_main.run (save arg) with
   | Ok response ->
-    print_endline response;
-    print_endline "Works"
-  | Error erros ->
-    let error = List.nth erros 0 in
-    let () = Core.print_endline error in
-    print_endline "Don't Works";
+    Format.printf "File path: %s" response;
+    print_endline "======Worked====="
+  | Error error ->
+    Format.printf "%s\n" "======Error=====";
+    Format.printf "Arg: %s\n" error.caller;
+    Format.printf "Unix code: %s\n" (Unix.error_message error.unix_code);
+    Format.printf "Caller: %s\n" error.caller;
     exit 1
