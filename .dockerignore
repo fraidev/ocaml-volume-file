@@ -1,0 +1,7 @@
+_esy
+_build
+node_modules
+nix
+.vscode
+.github
+*.install

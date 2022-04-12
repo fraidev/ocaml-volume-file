@@ -1,7 +1,5 @@
 FROM esydev/esy:nightly-alpine-latest as builder
 
-RUN apk add libexecinfo-dev libexecinfo-static
-
 WORKDIR /app
 
 COPY ./esy.lock esy.json ./
