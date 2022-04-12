@@ -79,18 +79,24 @@ let save file_name =
     with_atomic_open_out file (fun chan ->
         let content = "json" in
         write_string chan content) in
-  let* () = Lwt.return (Result.map_error (fun _ -> [Error file]) v) in
+  let _ =
+    match v with
+    | Ok _ -> print_endline "Works Ok"
+    | Error err ->
+      Format.printf "%s\n" "======Error=====";
+      Format.printf "Arg: %s\n" err.caller;
+      Format.printf "unix_code: %s\n" (Unix.error_message err.unix_code);
+      Format.printf "Caller: %s\n" err.caller in
   return file
 
 let () =
   let arg = Sys.argv.(1) in
-  (* let koe =  Lwt_main.run (save arg) *)
   match Lwt_main.run (save arg) with
-  | Ok response -> print_string response
-  | Error e -> 
-    let b = List.nth e 1 in
-    let _ = match b with
-    | Ok res -> prerr_endline res
-    | Error err -> prerr_endline err in
-  (* prerr_endline c; *)
-  exit 1
+  | Ok response ->
+    print_endline response;
+    print_endline "Works"
+  | Error erros ->
+    let error = List.nth erros 0 in
+    let () = Core.print_endline error in
+    print_endline "Don't Works";
+    exit 1
