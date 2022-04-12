@@ -84,8 +84,13 @@ let save file_name =
 
 let () =
   let arg = Sys.argv.(1) in
+  (* let koe =  Lwt_main.run (save arg) *)
   match Lwt_main.run (save arg) with
   | Ok response -> print_string response
-  | Error _ ->
-    prerr_endline "Request timed out";
-    exit 1
+  | Error e -> 
+    let b = List.nth e 1 in
+    let _ = match b with
+    | Ok res -> prerr_endline res
+    | Error err -> prerr_endline err in
+  (* prerr_endline c; *)
+  exit 1
