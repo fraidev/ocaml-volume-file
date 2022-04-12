@@ -1,10 +1,10 @@
 {
-    "name": "hello",
+    "name": "volume",
     "esy": {
         "build": "dune build -p #{self.name}",
         "release": {
             "bin": [
-                "hello"
+                "volume"
             ]
         },
         "buildEnv": {
@@ -13,17 +13,19 @@
     },
     "license": "MIT",
     "scripts": {
-        "start": "esy x hello.exe",
+        "start": "esy x volume.exe",
         "watch": "esy b dune build --watch",
-        "build": "dune build -p hello",
-        "test": "dune exec -p hello -- ./test.sh",
+        "build": "dune build -p volume",
+        "test": "dune exec -p volume -- ./test.sh",
         "format": "dune build @fmt --auto-promote",
         "build_static": "dune build --profile=static --release"
     },
     "dependencies": {
         "ocaml": "4.12.x",
         "@opam/dune": "*",
-        "@opam/core": "*"
+        "@opam/lwt": "*",
+        "@opam/core": "*",
+        "@opam/tezos-lwt-result-stdlib": "*"
     },
     "devDependencies": {
         "@opam/ocaml-lsp-server": "*",

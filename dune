@@ -1,4 +1,4 @@
 (executable
- (name hello)
- (public_name hello.exe)
- (libraries core))
+ (name volume)
+ (public_name volume.exe)
+ (libraries core lwt.unix lwt tezos-lwt-result-stdlib))
